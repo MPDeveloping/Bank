@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4 Box Total Calculator (With Names)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f1724;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      width: 350px;
+    }
+    h2 { margin-bottom: 15px; }
+    .row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #162033;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+    label span {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input {
+      width: 120px;
+      padding: 8px;
+      font-size: 16px;
+      text-align: center;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    .total {
+      font-size: 22px;
+      font-weight: bold;
+      background: #06b6d4;
+      padding: 12px;
+      border-radius: 6px;
+      color: #042022;
+    }
+    .reset-btn {
+      margin-top: 12px;
+      background: #ef4444;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>my prosnolas</h2>
+    <div class="row">
+      <label><span>Bob me:</span> <input type="number" id="b1" placeholder="0"></label>
+      <label><span>Bob be:</span> <input type="number" id="b2" placeholder="0"></label>
+      <label><span>banas me:</span> <input type="number" id="b3" placeholder="0"></label>
+      <label><span>Banas all:</span> <input type="number" id="b4" placeholder="0"></label>
+        <label><span>upi lite:</span> <input type="number" id="b4" placeholder="0"></label>
+         <label><span>cash:</span> <input type="number" id="b4" placeholder="0"></label>
+         
+    </div>
+    <div class="total" id="total">Total: 0</div>
+    <button class="reset-btn" id="reset">Reset All</button>
+  </div>
+
+  <script>
+    const boxes = [b1, b2, b3, b4];
+    const totalEl = document.getElementById("total");
+    const resetBtn = document.getElementById("reset");
+
+    function updateTotal() {
+      let sum = 0;
+      const values = [];
+      boxes.forEach(b => {
+        const val = parseFloat(b.value) || 0;
+        sum += val;
+        values.push(b.value);
+      });
+      totalEl.textContent = "Total: " + sum;
+      localStorage.setItem("boxValues", JSON.stringify(values));
+    }
+
+    // Restore saved values
+    window.addEventListener("load", () => {
+      const saved = JSON.parse(localStorage.getItem("boxValues") || "[]");
+      if (saved.length) {
+        boxes.forEach((b, i) => {
+          if (saved[i] !== undefined) b.value = saved[i];
+        });
+        updateTotal();
+      }
+    });
+
+    // Listen for changes
+    boxes.forEach(b => b.addEventListener("input", updateTotal));
+
+    // Reset button
+    resetBtn.addEventListener("click", () => {
+      boxes.forEach(b => b.value = "");
+      localStorage.removeItem("boxValues");
+      updateTotal();
+    });
+  </script>
+</body>
+</html>
