@@ -1,129 +1,245 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>4 Box Total Calculator (With Names)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Prosnolas - Settings</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f1724;
-      color: #fff;
+      background-color: #0f1923;
+      color: white;
+      font-family: 'Poppins', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-    .box {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
+
+    .container {
+      background-color: #1b2838;
+      padding: 25px;
+      border-radius: 15px;
+      width: 320px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      width: 350px;
+      position: relative;
     }
-    h2 { margin-bottom: 15px; }
-    .row {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+
+    h2 {
       margin-bottom: 20px;
+      text-transform: lowercase;
     }
-    label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #162033;
-      padding: 6px 10px;
-      border-radius: 6px;
-    }
-    label span {
-      font-size: 16px;
-      font-weight: bold;
-    }
+
     input {
-      width: 120px;
-      padding: 8px;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
       font-size: 16px;
       text-align: center;
-      border-radius: 6px;
-      border: none;
-      outline: none;
     }
-    .total {
-      font-size: 22px;
-      font-weight: bold;
-      background: #06b6d4;
-      padding: 12px;
-      border-radius: 6px;
-      color: #042022;
-    }
-    .reset-btn {
-      margin-top: 12px;
-      background: #ef4444;
+
+    button {
       border: none;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 8px 14px;
-      border-radius: 6px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
       cursor: pointer;
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+
+    #addBtn { background-color: #27ae60; color: white; }
+    #deleteBtn { background-color: #f39c12; color: white; }
+    #resetBtn { background-color: #3498db; color: white; }
+    #deleteBtn:hover { background-color: #d68910; }
+    #resetBtn:hover { background-color: #2980b9; }
+    #addBtn:hover { background-color: #1e8449; }
+
+    .input-group { margin-bottom: 10px; }
+    .total {
+      background-color: #00bcd4;
+      color: #000;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    /* ⚙️ Settings Button */
+    .settings-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Settings Menu */
+    .settings-menu {
+      position: absolute;
+      top: 50px;
+      right: -200px;
+      width: 180px;
+      background-color: #17222f;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      overflow: hidden;
+      transition: right 0.3s ease;
+    }
+
+    .settings-menu.open {
+      right: 15px;
+    }
+
+    .settings-item {
+      padding: 12px;
+      border-bottom: 1px solid #263548;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .settings-item:hover {
+      background-color: #263548;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>my prosnolas</h2>
-    <div class="row">
-      <label><span>Bob me:</span> <input type="number" id="b1" placeholder="0"></label>
-      <label><span>Bob be:</span> <input type="number" id="b2" placeholder="0"></label>
-      <label><span>banas me:</span> <input type="number" id="b3" placeholder="0"></label>
-      <label><span>Banas all:</span> <input type="number" id="b4" placeholder="0"></label>
-        <label><span>upi lite:</span> <input type="number" id="b5" placeholder="0"></label>
-         <label><span>cash:</span> <input type="number" id="b6" placeholder="0"></label>
-         
+
+  <!-- MAIN APP -->
+  <div class="container" id="appScreen">
+    <button class="settings-btn" id="settingsBtn">⚙️</button>
+    <div class="settings-menu" id="settingsMenu">
+      <div class="settings-item">About</div>
+      <div class="settings-item">Feedback</div>
+      <div class="settings-item">Help</div>
+      <div class="settings-item">Version 1.0</div>
     </div>
+
+    <h2 id="welcome">my prosnolas</h2>
+    <div id="inputArea"></div>
     <div class="total" id="total">Total: 0</div>
-    <button class="reset-btn" id="reset">Reset All</button>
+
+    <div>
+      <button id="addBtn">➕ Add Box</button>
+      <button id="deleteBtn">🗑️ Delete Box</button>
+      <button id="resetBtn">Reset All</button>
+    </div>
   </div>
 
   <script>
-    const boxes = [b1, b2, b3, b4, b5,b6];
-    const totalEl = document.getElementById("total");
-    const resetBtn = document.getElementById("reset");
+    const inputArea = document.getElementById('inputArea');
+    const totalDisplay = document.getElementById('total');
+    const addBtn = document.getElementById('addBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsMenu = document.getElementById('settingsMenu');
 
-    function updateTotal() {
-      let sum = 0;
-      const values = [];
-      boxes.forEach(b => {
-        const val = parseFloat(b.value) || 0;
-        sum += val;
-        values.push(b.value);
-      });
-      totalEl.textContent = "Total: " + sum;
-      localStorage.setItem("boxValues", JSON.stringify(values));
-    }
+    // Toggle settings menu
+    settingsBtn.addEventListener('click', () => {
+      settingsMenu.classList.toggle('open');
+    });
 
-    // Restore saved values
-    window.addEventListener("load", () => {
-      const saved = JSON.parse(localStorage.getItem("boxValues") || "[]");
-      if (saved.length) {
-        boxes.forEach((b, i) => {
-          if (saved[i] !== undefined) b.value = saved[i];
-        });
-        updateTotal();
+    // Close settings when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+        settingsMenu.classList.remove('open');
       }
     });
 
-    // Listen for changes
-    boxes.forEach(b => b.addEventListener("input", updateTotal));
+    // Load saved data
+    window.onload = () => {
+      const savedData = JSON.parse(localStorage.getItem("myProsnolasData")) || {
+        boxes: [
+          { name: "Bob me", value: 450 },
+          { name: "Bob be", value: 89 },
+          { name: "Banas me", value: 0 },
+          { name: "Banas all", value: 1 },
+          { name: "UPI lite", value: 3 },
+          { name: "Cash", value: 500 }
+        ]
+      };
+      savedData.boxes.forEach(b => addBox(b.name, b.value));
+      calculateTotal();
+    };
 
-    // Reset button
-    resetBtn.addEventListener("click", () => {
-      boxes.forEach(b => b.value = "");
-      localStorage.removeItem("boxValues");
-      updateTotal();
+    // Save data
+    function saveData() {
+      const boxes = [];
+      const groups = inputArea.querySelectorAll('.input-group');
+      groups.forEach(group => {
+        const name = group.querySelector('label').textContent.replace(':', '');
+        const value = Number(group.querySelector('input').value);
+        boxes.push({ name, value });
+      });
+      localStorage.setItem("myProsnolasData", JSON.stringify({ boxes }));
+    }
+
+    // Add box
+    function addBox(name, value = 0) {
+      const group = document.createElement('div');
+      group.className = 'input-group';
+      const label = document.createElement('label');
+      label.textContent = name + ':';
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.value = value;
+      input.addEventListener('input', () => {
+        calculateTotal();
+        saveData();
+      });
+      group.appendChild(label);
+      group.appendChild(input);
+      inputArea.appendChild(group);
+    }
+
+    // Calculate total
+    function calculateTotal() {
+      const inputs = inputArea.querySelectorAll('input');
+      let total = 0;
+      inputs.forEach(input => total += Number(input.value));
+      totalDisplay.textContent = `Total: ${total}`;
+    }
+
+    // Add new box
+    addBtn.addEventListener('click', () => {
+      const name = prompt("Enter name for new box:");
+      if (!name) return;
+      addBox(name, 0);
+      saveData();
+      calculateTotal();
+    });
+
+    // Delete box
+    deleteBtn.addEventListener('click', () => {
+      const name = prompt("Enter box name to delete:");
+      if (!name) return;
+      const groups = inputArea.querySelectorAll('.input-group');
+      let deleted = false;
+      groups.forEach(group => {
+        const label = group.querySelector('label');
+        if (label.textContent.replace(':', '').trim().toLowerCase() === name.toLowerCase()) {
+          group.remove();
+          deleted = true;
+        }
+      });
+      if (!deleted) alert("⚠️ Box not found!");
+      saveData();
+      calculateTotal();
+    });
+
+    // Reset all
+    resetBtn.addEventListener('click', () => {
+      const inputs = inputArea.querySelectorAll('input');
+      inputs.forEach(input => input.value = 0);
+      calculateTotal();
+      saveData();
     });
   </script>
 </body>
